@@ -32,6 +32,6 @@ jobs:
 
       - name: Run Composer Audit
         run: composer audit --no-interaction
-
+        
       - name: Execute Application Tests
-        run: php artisan test
+        run: docker compose exec -T app php artisan test
