@@ -27,11 +27,13 @@ jobs:
       - name: Validate Composer configuration
         run: composer validate --strict
 
-      - name: Install dependencies
-        run: composer install --no-interaction --prefer-dist --no-progress --no-scripts
-
       - name: Run Composer Audit
-        run: composer audit --no-interaction
-        
+        run: composer audit --locked --no-interaction
+
+      - name: Build and start the application
+        run: |
+          docker compose up -d --build
+          curl --fail --silent --retry 40 --retry-delay 3 --retry-connrefused http://localhost:8000/up
+
       - name: Execute Application Tests
         run: docker compose exec -T app php artisan test
